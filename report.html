@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【公開用】総合財務分析レポート（2025年5月～7月）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f9fafb;
+        }
+        .report-container {
+            max-width: 1200px;
+            margin: auto;
+            background-color: white;
+            padding: 2rem;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        h1, h2, h3 {
+            font-weight: 700;
+        }
+        h1 { font-size: 2.25rem; color: #111827; border-bottom: 2px solid #3b82f6; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        h2 { font-size: 1.875rem; color: #1f2937; margin-top: 2.5rem; margin-bottom: 1.5rem; border-left: 5px solid #3b82f6; padding-left: 0.75rem; }
+        h3 { font-size: 1.5rem; color: #374151; margin-top: 2rem; margin-bottom: 1rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        th { background-color: #f3f4f6; font-weight: 700; }
+        .summary-card { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; }
+        .profit { color: #16a34a; }
+        .loss { color: #dc2626; }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <header class="text-center mb-12">
+            <h1>総合財務分析レポート</h1>
+            <p class="text-xl text-gray-600">期間：2025年5月1日～2025年7月31日</p>
+        </header>
+
+        <!-- Executive Summary -->
+        <section>
+            <h2>1. エグゼクティブサマリー</h2>
+            <div class="summary-card">
+                <h3 class="!mt-0">現状の課題</h3>
+                <p class="text-lg mb-4">あなたの事業は、**5月のように売上が好調な月には高い利益を生み出す力があります。**しかし、**売上が落ち込んだ際に、コントロールすべき広告宣伝費が増加してしまっている**ため、6月・7月は赤字に転落しています。</p>
+                <h3>改善への提言</h3>
+                <p class="text-lg">**広告宣伝費の費用対効果（ROI）を見直すこと**が、今すぐ取り組むべき最優先課題です。「売上の〇%まで」といった広告費の予算ルールを設けることが、安定した利益（段高）を生み出すための最も確実な一歩となります。</p>
+            </div>
+        </section>
+
+        <!-- Overall P&L -->
+        <section>
+            <h2 id="pnl">2. 事業全体の損益状況</h2>
+            <h3>月次損益の推移</h3>
+            <div class="chart-container">
+                <canvas id="pnlChart"></canvas>
+            </div>
+            <h3>損益計算書（最終確定版）</h3>
+            <table id="pnlTable"></table>
+        </section>
+
+        <!-- Bank & Credit Cards -->
+        <section>
+            <h2 id="details">3. 収入と支出の詳細分析</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <h3>収入（売上）の月別割合</h3>
+                    <div class="chart-container h-[450px]">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h3>費用全体の構成（3ヶ月合計）</h3>
+                    <div class="chart-container h-[450px]">
+                        <canvas id="totalExpenseChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>4. クレジットカード利用詳細</h2>
+            
+            <h3>AMEX (事業用) 経費の内訳</h3>
+            <div class="chart-container">
+                <canvas id="amexChart"></canvas>
+            </div>
+            <details>
+                <summary class="cursor-pointer text-blue-600">AMEX利用明細（サンプル）を表示</summary>
+                <div class="mt-4 overflow-x-auto"><table id="amexDetailTable"></table></div>
+            </details>
+
+            <h3 class="mt-12">三井住友VISA (投資用) 支出の内訳</h3>
+            <div class="chart-container">
+                <canvas id="visaChart"></canvas>
+            </div>
+             <details>
+                <summary class="cursor-pointer text-blue-600">三井住友VISA利用明細（サンプル）を表示</summary>
+                <div class="mt-4 overflow-x-auto"><table id="visaDetailTable"></table></div>
+            </details>
+
+            <h3 class="mt-12">JCB (プライベート) 支出の内訳</h3>
+             <div class="chart-container">
+                <canvas id="jcbChart"></canvas>
+            </div>
+            <details>
+                <summary class="cursor-pointer text-blue-600">JCB利用明細（サンプル）を表示</summary>
+                <div class="mt-4 overflow-x-auto"><table id="jcbDetailTable"></table></div>
+            </details>
+        </section>
+
+        <section>
+            <h2>5. 銀行口座の支出詳細</h2>
+            <h3>主な外注先への支払い（3ヶ月合計）</h3>
+            <div class="chart-container">
+                <canvas id="outsourcingChart"></canvas>
+            </div>
+            <details>
+                <summary class="cursor-pointer text-blue-600">銀行の支出明細（サンプル）を表示</summary>
+                <div class="mt-4 overflow-x-auto"><table id="bankDetailTable"></table></div>
+            </details>
+        </section>
+    </div>
+
+    <script>
+    // --- データ定義 ---
+    // このセクションに全ての分析データを集約しています
+    const finalPnlData = {
+        header: ['項目', '5月', '6月', '7月'],
+        rows: [
+            ['売上', 2760500, 585250, 1062500],
+            ['費用合計', -734701, -1091464, -1216841],
+            ['最終利益', 2025799, -506214, -154341]
+        ]
+    };
+
+    const salesPieData = {
+        labels: ['5月売上', '6月売上', '7月売上'],
+        data: [2760500, 585250, 1062500]
+    };
+    
+    const totalExpensePieData = {
+        labels: ['外注・業務委託費', 'AMEX経費', '地代家賃', 'その他経費'],
+        data: [1814199, 934100, 384000, 117657]
+    };
+
+    const outsourcingBarData = {
+        labels: ['石川様', '佐藤様', '宮原様', '岩見様', 'その他'],
+        data: [603489, 452550, 629500, 130442, 54781]
+    };
+
+    const amexPieData = {
+        labels: ['広告宣伝費', '仕入・備品', '水道光熱費', '旅費交通費', 'その他'],
+        data: [588548, 63778, 75081, 18830, 187863] 
+    };
+
+    const visaPieData = {
+        labels: ['投信積立', '保険料', 'その他'],
+        data: [99999, 6783, 11192]
+    };
+    
+    const jcbPieData = {
+        labels: ['食費・日用品', '買い物', 'コンビニ', '交通費', 'その他'],
+        data: [150000, 120000, 45306, 32620, 280000]
+    };
+    
+    // --- 詳細データテーブル（サンプル） ---
+    const amexDetail = [
+        { date: '2025-07-27', desc: 'FACEBK *W9K76WQRS2', amount: 38372 },
+        { date: '2025-07-26', desc: 'FACEBK *YL7DRWLSS2', amount: 43247 },
+        { date: '2025-06-04', desc: 'FACEBK *5DF6AT8SS2', amount: 289 },
+    ];
+    const visaDetail = [
+        { date: '2025-05-12', desc: 'ＳＢＩ証券投信積立サービス', amount: 33333 },
+        { date: '2025-05-20', desc: 'ＳＯＭＰＯひまわり生命保険料', amount: 2261 },
+    ];
+    const jcbDetail = [
+        { date: '2025-04-28', desc: 'マルエツ', amount: 4991 },
+        { date: '2025-06-16', desc: 'ドン・キホーテ', amount: 9985 },
+    ];
+    const bankDetail = [
+        { date: '2025-07-21', desc: '振込＊イシカワ　アカネ', amount: 145666 },
+        { date: '2025-06-15', desc: '振込＊ミヤハラ　ユウシ', amount: 214313 },
+        { date: '2025-05-15', desc: '振込＊フジイ　ミツヒロ', amount: 128000 },
+    ];
+
+    // --- ユーティリティ関数 ---
+    const formatYen = (value) => value.toLocaleString() + '円';
+
+    const createTable = (tableId, data) => {
+        const table = document.getElementById(tableId);
+        let html = `<thead><tr>${data.header.map(h => `<th>${h}</th>`).join('')}</tr></thead>`;
+        html += '<tbody>';
+        data.rows.forEach(row => {
+            html += '<tr>';
+            row.forEach((cell, index) => {
+                let content = typeof cell === 'number' ? formatYen(cell) : cell;
+                let className = '';
+                if (typeof cell === 'number' && cell > 0 && index > 0) className = 'profit';
+                if (typeof cell === 'number' && cell < 0 && index > 0) className = 'loss';
+                html += `<td class="font-mono text-right ${className}">${content}</td>`;
+            });
+            html += '</tr>';
+        });
+        html += '</tbody>';
+        table.innerHTML = html;
+    };
+    
+    const createDetailTable = (tableId, data, headers) => {
+        const table = document.getElementById(tableId);
+        let html = `<thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>`;
+        html += '<tbody>';
+        data.forEach(row => {
+            html += '<tr>';
+            Object.values(row).forEach((cell, index) => {
+                 let content = index === 2 ? formatYen(cell) : cell;
+                 let tdClass = index === 2 ? 'font-mono text-right' : '';
+                 html += `<td class="${tdClass}">${content}</td>`;
+            });
+            html += '</tr>';
+        });
+        html += '</tbody>';
+        table.innerHTML = html;
+    }
+
+    // --- グラフ描画 ---
+    document.addEventListener('DOMContentLoaded', () => {
+        Chart.defaults.font.family = "'Noto Sans JP', sans-serif";
+        
+        // P&L Chart
+        const ctxPnl = document.getElementById('pnlChart').getContext('2d');
+        new Chart(ctxPnl, {
+            type: 'bar',
+            data: {
+                labels: ['5月', '6月', '7月'],
+                datasets: [
+                    { label: '売上', data: finalPnlData.rows[0].slice(1), backgroundColor: '#3b82f6' },
+                    { label: '費用合計', data: finalPnlData.rows[1].slice(1).map(v => -v), backgroundColor: '#ef4444' },
+                    { label: '最終利益', data: finalPnlData.rows[2].slice(1), type: 'line', borderColor: '#16a34a', borderWidth: 3, tension: 0.1, fill: false }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { callback: formatYen } } } }
+        });
+
+        // Pie/Doughnut Charts
+        const createPieChart = (ctxId, chartData, type = 'pie') => {
+            const ctx = document.getElementById(ctxId).getContext('2d');
+            new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: chartData.labels,
+                    datasets: [{ data: chartData.data, backgroundColor: ['#3b82f6', '#ef4444', '#10b981', '#f97316', '#8b5cf6', '#eab308'] }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom'}, tooltip: { callbacks: { label: (c) => `${c.label}: ${formatYen(c.raw)}` } } } }
+            });
+        };
+        
+        createPieChart('salesChart', salesPieData, 'doughnut');
+        createPieChart('totalExpenseChart', totalExpensePieData, 'pie');
+        createPieChart('amexChart', amexPieData, 'pie');
+        createPieChart('visaChart', visaPieData, 'pie');
+        createPieChart('jcbChart', jcbPieData, 'pie');
+
+        // Bar Chart
+        const ctxOutsourcing = document.getElementById('outsourcingChart').getContext('2d');
+        new Chart(ctxOutsourcing, {
+            type: 'bar',
+            data: {
+                labels: outsourcingBarData.labels,
+                datasets: [{ label: '支払額', data: outsourcingBarData.data, backgroundColor: '#6366f1' }]
+            },
+            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { callback: formatYen } } } }
+        });
+
+        // --- テーブル生成 ---
+        createTable('pnlTable', finalPnlData);
+        createDetailTable('amexDetailTable', amexDetail, ['日付', '内容', '金額']);
+        createDetailTable('visaDetailTable', visaDetail, ['日付', '内容', '金額']);
+        createDetailTable('jcbDetailTable', jcbDetail, ['日付', '内容', '金額']);
+        createDetailTable('bankDetailTable', bankDetail, ['日付', '内容', '金額']);
+    });
+    </script>
+</body>
+</html>
